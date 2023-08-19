@@ -10,4 +10,7 @@ export const requests ={
   feactHorrorMovies:`/discover/tv?api_key=${API_KEY}&with_genres=27`,
   feactRomanceMovies:`/discover/tv?api_key=${API_KEY}&with_genres=10749`,
   feactDocumentMovies:`/discover/tv?api_key=${API_KEY}&with_genres=99`,
+  trailerUrl:(movie_id: string): string => {
+    return `/movie/${movie_id}/videos?api_key=${API_KEY}`;
+  },
 }
