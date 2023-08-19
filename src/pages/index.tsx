@@ -3,6 +3,7 @@
 import Head from 'next/head';
 import Row from '@/components/Row';
 import {Banner} from '@/components/Banner';
+import {Nav} from '@/components/Nav';
 import { requests } from '@/lib/request';
 
 export default function Home() {
@@ -16,6 +17,7 @@ export default function Home() {
       </Head>
       <main>
         <div className="App">
+          <Nav />
           <Banner />
           <Row
             title="NETFLIX ORIGUINALS"
