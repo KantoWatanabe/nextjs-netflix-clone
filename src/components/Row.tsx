@@ -1,23 +1,13 @@
-import { useEffect, useState } from "react";
-import axios from "@/lib/axios";
 import { IMAGE_BASE_URL } from '@/lib/request';
 import styles from './Row.module.scss';
-import { requests } from '@/lib/request';
 import YouTube from 'react-youtube';
+import { useMovie, Movie } from '@/hooks/useMovie';
+import { useTrailerUrl } from '@/hooks/useTrailerUrl';
 
 type Props = {
   title: string;
   fetchUrl: string;
   isLargeRow?: boolean;
-};
-
-type Movie = {
-  id: string;
-  name: string;
-  title: string;
-  original_name: string;
-  poster_path: string;
-  backdrop_path: string;
 };
 
 type Options = {
@@ -29,17 +19,8 @@ type Options = {
 };
 
 export default function Row({ title, fetchUrl, isLargeRow }: Props) {
-  const [movies, setMovies] = useState<Movie[]>([]);
-  const [trailerUrl, setTrailerUrl] = useState<string | null>("");
-
-  useEffect(() => {
-    async function fetchData() {
-      const request = await axios.get(fetchUrl);
-      setMovies(request.data.results);
-      return request;
-    }
-    fetchData();
-  }, [fetchUrl]);
+  const [trailerUrl, { setTrailerUrl, fetchTrailerUrl }] = useTrailerUrl();
+  const movies: Movie[] = useMovie(fetchUrl);
 
   if (movies.length === 0) {
     return false;
@@ -58,10 +39,7 @@ export default function Row({ title, fetchUrl, isLargeRow }: Props) {
     if (trailerUrl) {
       setTrailerUrl("");
     } else {
-      let trailerurl = await axios.get(
-        requests.trailerUrl(movie.id)
-      );
-      setTrailerUrl(trailerurl.data.results[0]?.key);
+      fetchTrailerUrl(movie.id);
     }
   };
 
