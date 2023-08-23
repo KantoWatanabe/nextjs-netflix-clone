@@ -20,7 +20,7 @@ export const useMovie = (fetchUrl: string) => {
       return request;
     }
     fetchData();
-  }, []);
+  }, [fetchUrl]);
 
   return movies;
 };

@@ -1,7 +1,7 @@
 import { IMAGE_BASE_URL } from '@/lib/request';
 import styles from './Row.module.scss';
 import YouTube from 'react-youtube';
-import { useMovie, Movie } from '@/hooks/useMovie';
+import { useMovie, Movie } from '@/hooks/useMovie2';
 import { useTrailerUrl } from '@/hooks/useTrailerUrl';
 
 type Props = {
@@ -20,7 +20,7 @@ type Options = {
 
 export default function Row({ title, fetchUrl, isLargeRow }: Props) {
   const [trailerUrl, { setTrailerUrl, fetchTrailerUrl }] = useTrailerUrl();
-  const movies: Movie[] = useMovie(fetchUrl);
+  const {movies, loading, error} = useMovie(fetchUrl);
 
   if (movies.length === 0) {
     return false;
@@ -46,21 +46,28 @@ export default function Row({ title, fetchUrl, isLargeRow }: Props) {
   return(
     <div className={styles.Row}>
       <h2>{title}</h2>
-      <div className={styles['Row-posters']}>
-        {/* ポスターコンテンツ */}
-        {movies.map((movie, i) => (
-          <img
-            key={movie.id}
-            className={`${styles['Row-poster']} ${isLargeRow && styles['Row-poster-large']}`}
-            src={`${IMAGE_BASE_URL}${
-              isLargeRow ? movie.poster_path : movie.backdrop_path
-            }`}
-            alt={movie.name}
-            onClick={() => handleClick(movie)}
-          />
-        ))}
-      </div>
-      {trailerUrl && <YouTube videoId={trailerUrl} opts={opts} />}
+      {error && (<div>{error.message}</div>)}
+      {loading ? (
+        <div>loading...</div>
+      ) : (
+        <>
+          <div className={styles['Row-posters']}>
+            {/* ポスターコンテンツ */}
+            {movies.map((movie, i) => (
+              <img
+                key={movie.id}
+                className={`${styles['Row-poster']} ${isLargeRow && styles['Row-poster-large']}`}
+                src={`${IMAGE_BASE_URL}${
+                  isLargeRow ? movie.poster_path : movie.backdrop_path
+                }`}
+                alt={movie.name}
+                onClick={() => handleClick(movie)}
+              />
+            ))}
+          </div>
+          {trailerUrl && <YouTube videoId={trailerUrl} opts={opts} />}
+        </>  
+      )}
     </div>
   );
 };
