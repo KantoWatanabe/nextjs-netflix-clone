@@ -10,6 +10,6 @@ export const useTrailerUrl = (): [string | null, { setTrailerUrl: Dispatch<SetSt
       requests.trailerUrl(movie_id)
     );
     setTrailerUrl(trailerurl.data.results[0]?.key);
-  }, [trailerUrl]);
+  }, []);
   return [trailerUrl, { setTrailerUrl, fetchTrailerUrl }];
 };
