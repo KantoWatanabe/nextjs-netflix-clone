@@ -22,9 +22,9 @@ export default function Row({ title, fetchUrl, isLargeRow }: Props) {
   const [trailerUrl, { setTrailerUrl, fetchTrailerUrl }] = useTrailerUrl();
   const {movies, loading, error} = useMovie(fetchUrl);
 
-  if (movies.length === 0) {
-    return false;
-  }
+  //if (movies.length === 0) {
+  //  return false;
+  //}
 
   const opts: Options = {
     height: "390",
@@ -46,10 +46,16 @@ export default function Row({ title, fetchUrl, isLargeRow }: Props) {
   return(
     <div className={styles.Row}>
       <h2>{title}</h2>
-      {error && (<div>{error.message}</div>)}
-      {loading ? (
+      {loading && (
         <div>loading...</div>
-      ) : (
+      )}
+      {error && (
+        <div>{error.message}</div>
+      )}
+      {(!loading && !error && movies.length === 0) && (
+        <div>データがありません</div>
+      )}
+      {(!loading && !error && movies.length > 0) && (
         <>
           <div className={styles['Row-posters']}>
             {/* ポスターコンテンツ */}
