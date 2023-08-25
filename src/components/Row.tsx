@@ -3,6 +3,7 @@ import styles from './Row.module.scss';
 import YouTube from 'react-youtube';
 import { useMovie, Movie } from '@/hooks/useMovie2';
 import { useTrailerUrl } from '@/hooks/useTrailerUrl';
+import image404 from '@/assets/404.png';
 
 type Props = {
   title: string;
@@ -68,6 +69,9 @@ export default function Row({ title, fetchUrl, isLargeRow }: Props) {
                 }`}
                 alt={movie.name}
                 onClick={() => handleClick(movie)}
+                onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+                  (e.target as HTMLImageElement).src = image404.src;
+                }}
               />
             ))}
           </div>
